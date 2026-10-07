@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Mercado - Homologação EAN</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/produtos.css') }}">
+</head>
+<body>
+    <header>
+        <h1>CADASTRO DE PRODUTOS EXISTENTES</h1>
+    </header>
+    <main>
+        <form id="form-registration" action="/salvar_produto_existente" method="POST">
+            
+            <section aria-label="Identidade do Produto" class="form-cadastro grid-identidade">
+                <div class="campo-grupo">
+                    <label for="barcode">Código de Barras (EAN)</label>
+                    <input type="text" name="barcode" id="barcode" autofocus required>
+                    <div id="status_barcode" class="status-label"></div>
+                </div>
+                
+                <div class="campo-grupo">
+                    <label>Descrição do Produto</label>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px;">
+                        <input type="text" id="base_description" placeholder="Ex: Arroz Branco" required>
+                        <input type="number" id="measure_value" placeholder="Valor" step="any">
+                        <select id="measure_unit">
+                            <option value="KG">KG</option>
+                            <option value="G">G</option>
+                            <option value="L">L</option>
+                            <option value="ML">ML</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="campo-grupo">
+                    <label for="brand">Marca</label>
+                    <input type="text" name="brand" id="brand" required>
+                </div>
+            </section>
+
+            <section aria-label="Cálculo de Preço" class="form-cadastro grid-preco">
+                <div class="campo-grupo">
+                    <label for="profit_margin">Margem (%)</label>
+                    <input type="number" id="profit_margin" class="input-margem" placeholder="Ex: 30">
+                </div>
+                <div class="campo-grupo">
+                    <label for="cost_reals">Custo (R$)</label>
+                    <input type="number" id="cost_reals" placeholder="0">
+                </div>
+                <div class="campo-grupo">
+                    <label for="cost_cents">Custo (Centavos)</label>
+                    <input type="number" id="cost_cents" placeholder="00" max="99">
+                </div>
+                <div class="campo-grupo">
+                    <label for="sale_reals" class="destaque-venda">Venda (R$)</label>
+                    <input type="number" id="sale_reals" placeholder="0" required>
+                </div>
+                <div class="campo-grupo">
+                    <label for="sale_cents" class="destaque-venda">Venda (Cents)</label>
+                    <input type="number" id="sale_cents" placeholder="00" max="99" required>
+                </div>
+                
+                <!-- Campos ocultos para envio consolidado -->
+                <input type="hidden" name="price" id="final_price">
+                <input type="hidden" name="description" id="final_description">
+                
+                <button type="submit" class="btn-salvar">SALVAR</button>
+            </section>
+        </form>
+
+        <section class="secao-lista" aria-label="Lista de Produtos Cadastrados">
+            <h3>Últimos Itens Homologados</h3>
+            
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>EAN</th>
+                            <th>Marca</th>
+                            <th>Descrição</th>
+                            <th>Preço Final</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-list">
+                        {% for product in products %}
+                        <tr>
+                            <td>{{ product['barcode'] }}</td>
+                            <td>{{ product['brand'] }}</td>
+                            <td>{{ product['description'] }}</td>
+                            <td>R$ {{ "%.2f"|format(product['price']) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div>ESC para sair do módulo</div>
+        <div>Módulo de Homologação Offline</div>
+    </footer>
+    
+    <!-- Ordem correta das dependências rigorosamente respeitada -->
+    <script src="{{ url_for('static', filename='js/api_produtos.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/precificacao.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/produtos_ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navegacao.js') }}"></script>
+</body>
+</html>

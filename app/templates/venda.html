@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Mercado - Frente de Caixa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/venda.css') }}">
+</head>
+<body>
+    <header>
+        <h2 style="margin: 0; text-align: center;">CAIXA OCUPADO</h2>
+    </header>
+    <main>
+        <div class="venda-container" style="flex-direction: row;">
+            
+            <section class="painel-lista" aria-label="Lista de Produtos">
+                <table id="tabela-itens">
+                    <thead>
+                        <tr>
+                            <th>Cód.</th>
+                            <th>Marca</th>
+                            <th>Produto</th>
+                            <th>Qtd</th>
+                            <th>Preço</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </section>
+
+            <div class="painel-operacional" aria-label="Comandos de Venda">
+                <section class="card-caixa">
+                    <label for="barcode">Aguardando Leitura...</label>
+                    <input type="text" id="barcode" placeholder="Bipe o código" autofocus>
+                </section>
+                
+                <div class="card-caixa total-display">
+                    <span>TOTAL</span>
+                    <h1 id="valor-total">R$ 0,00</h1>
+                </div>
+                
+                <div class="acoes-finalizacao">
+                    <section>
+                        <button class="btn-acao pago">FINALIZAR VENDA</button>
+                    </section>
+                    <section class="secao-cancelar">
+                        <button class="btn-acao cancelar">CANCELAR VENDA (Del)</button>
+                    </section>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    <footer>
+        <div style="display: flex; justify-content: space-between; padding: 0 20px;">
+            <span>ESC para sair</span>
+            <span>Operador: Paulo Monteiro</span>
+        </div>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/api_venda.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navegacao.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/venda.js') }}"></script>
+</body>
+</html>

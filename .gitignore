@@ -1,0 +1,9 @@
+# === Toolkit Protection ===
+toolkit
+development-method.md
+ai-context-docs.txt
+ai-context-code.txt
+# ==========================
+__pycache__
+data
+.env
