@@ -28,7 +28,9 @@ def produtos_existentes():
 
 @routes_bp.route('/api/consulta-ean/<barcode>')
 def consulta_ean(barcode):
-    product = get_product_by_barcode(barcode)
+    # Força tipo string
+    barcode_str = str(barcode).strip()
+    product = get_product_by_barcode(barcode_str)
 
     if product:
         return jsonify({
@@ -39,7 +41,7 @@ def consulta_ean(barcode):
             "price": product['price']
         })
 
-    url = f"https://world.openfoodfacts.org/api/v0/product/{barcode}.json"
+    url = f"https://world.openfoodfacts.org/api/v0/product/{barcode_str}.json"
     try:
         response = requests.get(url, timeout=20)
         data = response.json()
@@ -58,7 +60,10 @@ def consulta_ean(barcode):
 
 @routes_bp.route('/salvar_produto_existente', methods=['POST'])
 def salvar_produto_existente():
-    barcode = request.form.get('barcode')
+    # Coleta e assegura string
+    raw_barcode = request.form.get('barcode', '')
+    barcode = str(raw_barcode).strip()
+    
     description = request.form.get('description')
     brand = request.form.get('brand')
     price = request.form.get('price')
@@ -77,7 +82,8 @@ def salvar_venda():
     if not items_raw:
         return jsonify({"success": False, "message": "Venda vazia."}), 400
 
-    items_mapped = [{'barcode': i['barcode'], 'quantity': i['quantity']} for i in items_raw]
+    # Força a conversão iterativa para string no barcode
+    items_mapped = [{'barcode': str(i['barcode']).strip(), 'quantity': i['quantity']} for i in items_raw]
 
     success, result = register_sale(items_mapped, total_amount)
     

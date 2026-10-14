@@ -49,15 +49,17 @@ def get_all_products():
 
 def get_product_by_barcode(barcode):
     conn = get_db_connection()
-    product = conn.execute('SELECT * FROM products WHERE barcode = ?', (barcode,)).fetchone()
+    barcode_str = str(barcode) # Proteção adicional para garantir texto no binding
+    product = conn.execute('SELECT * FROM products WHERE barcode = ?', (barcode_str,)).fetchone()
     conn.close()
     return dict(product) if product else None
 
 def insert_or_update_product(barcode, description, brand, price):
     conn = get_db_connection()
+    barcode_str = str(barcode) # Proteção adicional
     conn.execute(
         'INSERT OR REPLACE INTO products (barcode, description, brand, price) VALUES (?, ?, ?, ?)',
-        (barcode, description, brand, price)
+        (barcode_str, description, brand, price)
     )
     conn.commit()
     conn.close()

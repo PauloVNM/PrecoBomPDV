@@ -80,16 +80,17 @@ document.addEventListener('DOMContentLoaded', () => {
     domElements.saleReals.addEventListener('input', updateHiddenPriceUI);
     domElements.saleCents.addEventListener('input', updateHiddenPriceUI);
 
-    // 5. Ouvinte do Leitor de Códigos com Validação Estrita e Tratamento de Erros
+// 5. Ouvinte do Leitor de Códigos com Validação Estrita e Tratamento de Erros
     domElements.barcode.addEventListener('keydown', async (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            const code = domElements.barcode.value.trim();
-            if (!code) return;
             
-            // Validação de EAN estrita: exatamente 13 dígitos
-            if (!/^\d{13}$/.test(code)) {
-                statusLabel.innerText = "EAN inválido. Apenas 13 números.";
+            // Força a conversão para String e remove espaços
+            const code = String(domElements.barcode.value).trim();
+            
+            // Validação simples: apenas bloqueia inputs vazios
+            if (!code) {
+                statusLabel.innerText = "Código inválido.";
                 statusLabel.style.color = "#e74c3c";
                 return;
             }
